@@ -1,0 +1,456 @@
+
+/*****************   布局 g-  ********************/
+
+.g-white-bg {
+    background-color: #fff;
+    min-height: 100%;
+}
+
+.container {
+    position: relative;
+}
+
+// wrap
+.g-wrap {
+    padding: 0;
+    min-width: 300px;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+// img 宽度与设备宽度相同
+.img {
+    vertical-align: top;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    background: url("@{img}/placeholder@!100_100.png") no-repeat #fff center center;
+    background-size: 75% 75%;
+}
+
+.img-center {
+    display: block;
+    vertical-align: top;
+    margin: 10px auto;
+}
+
+.img-circle {
+    .border-radius(100%);
+}
+
+.img-border {
+    border: 1px solid #f0f0f0;
+}
+
+.num {
+    display: inline-block;
+    font-family: arial;
+}
+
+.img-h {
+    height: 100%;
+}
+
+// display
+.g-none {
+    display: none;
+}
+
+.g-block {
+    display: block;
+}
+.g-iblock{
+    display: inline-block;
+}
+
+
+// margin-padding
+.g-mt10 {
+    margin-top: 10px;
+}
+
+.g-mt5 {
+    margin-top: 5px;
+}
+
+.g-mt15 {
+    margin-top: 15px;
+}
+
+.g-mt30 {
+    margin-top: 30px;
+}
+
+.g-mt20 {
+    margin-top: 20px;
+}
+
+.g-mb20 {
+    margin-bottom: 20px;
+}
+
+.g-mb10 {
+    margin-bottom: 10px;
+}
+
+.g-mb0 {
+    margin-bottom: 0 !important;
+}
+
+.g-mr10 {
+    margin-right: 10px;
+}
+
+.g-mr5 {
+    margin-right: 5px;
+}
+
+.g-ml5 {
+    margin-left: 5px;
+}
+
+.g-ml15 {
+    margin-left: 15px;
+}
+
+.padding {
+    padding: @content-padding;
+}
+
+.g-line {
+    width: 100%;
+    height: 10px;
+    font-size: 0;
+    background-color: #f0f0f0;
+}
+
+// Clearfix
+// --------------------------------------------------
+.clearfix {
+    *zoom: 1;
+    &:before,
+    &:after {
+        display: table;
+        content: "";
+        line-height: 0;
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+// col-
+.g-row {
+    line-height: 24px;
+}
+
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12 {
+    float: left;
+}
+
+.col-12 {
+    width: 100%;
+}
+
+.col-11 {
+    width: 91.66666666666666%;
+}
+
+.col-10 {
+    width: 83.33333333333334%;
+}
+
+.col-9 {
+    width: 75%;
+}
+
+.col-8 {
+    width: 66.66666666666666%;
+}
+
+.col-7 {
+    width: 58.333333333333336%;
+}
+
+.col-6 {
+    width: 50%;
+}
+
+.col-5 {
+    width: 41.66666666666667%;
+}
+
+.col-4 {
+    width: 33.33333333333333%;
+}
+
+.col-3 {
+    width: 25%;
+}
+
+.col-2-1 {
+    width: 20%;
+}
+
+.col-2 {
+    width: 16.666666666666664%;
+}
+
+.col-1 {
+    width: 8.333333333333332%;
+}
+
+// float
+.g-fl {
+    float: left;
+}
+
+.g-fr {
+    float: right;
+}
+
+// text-align
+.g-tal {
+    text-align: left;
+}
+
+.g-tac {
+    text-align: center;
+}
+
+.g-tar {
+    text-align: right;
+}
+
+.g-psr {
+    position: relative;
+}
+
+.g-psa {
+    position: absolute;
+}
+
+.num {
+    font-family: arial;
+}
+
+.g-row {
+    padding: 5px 0;
+    line-height: 26px;
+}
+
+.attr-name {
+    color: @text-gray-light;
+    .font-size;
+    margin-right: 5px;
+    .num {
+        color: @text-gray-light;
+    }
+}
+
+.line {
+    font-size: 0;
+    border-top: 1px solid @border-color;
+    height: 0;
+    &.line-lr {
+        margin: 0 10px;
+    }
+}
+
+.m-detail {
+    p {
+        line-height: 24px;
+        .font-size;
+        color: @text-gray;
+        margin-bottom: 5px;
+    }
+}
+
+.img-detail {
+    border: 1px solid @border-color;
+    margin: 10px 0;
+}
+
+.disabled {
+    color: @text-gray !important;
+}
+
+#blank {
+    height: 30px;
+    line-height: 30px;
+    font-size: 20px;
+    text-align: center;
+    padding: 100px 0;
+    color: #999;
+    p {
+        line-height: 30px;
+    }
+}
+
+.corporate-culture {
+    line-height: 44px;
+    text-align: center;
+    .font-size;
+    a {
+        display: block;
+        color: @text-gray;
+    }
+}
+
+// 加载
+#pageLoading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 999;
+    margin-left: -50px;
+    margin-top: -20px;
+    height: 40px;
+    width: 100px;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    color: #fff;
+    line-height: 30px;
+    padding: 5px 0;
+    .font-size;
+    .border-radius(5px);
+}
+
+
+// 底部按钮
+.bottom-buttons {
+    width: 75%;
+    margin: 40/16rem auto;
+    .left-button {
+        float: left;
+    }
+    .right-button {
+        float: right;
+    }
+}
+
+.spinner-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -60px;
+    height: 80px;
+    width: 120px;
+    .txt {
+        padding: 8px 0;
+        line-height: 30px;
+        color: #fff;
+        text-align: center;
+    }
+}
+
+.spinner {
+    text-align: center;
+}
+
+.spinner > div {
+    width: 14px;
+    height: 14px;
+    margin: 0 5px;
+    background-color: @primary;
+    border-radius: 50%;
+    display: inline-block;
+    -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+    -moz-animation: bouncedelay 1.4s infinite ease-in-out;
+    animation: bouncedelay 1.4s infinite ease-in-out;
+    -webkit-animation-fill-mode: both;
+    -moz-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+.spinner .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+    background-color: #f18b07;
+}
+
+@-webkit-keyframes bouncedelay {
+    0%,
+    80%,
+    100% {
+        -webkit-transform: scale(0.0)
+    }
+    40% {
+        -webkit-transform: scale(1.0)
+    }
+}
+
+@keyframes bouncedelay {
+    0%,
+    80%,
+    100% {
+        transform: scale(0.0);
+        -webkit-transform: scale(0.0);
+    }
+    40% {
+        transform: scale(1.0);
+        -webkit-transform: scale(1.0);
+    }
+}
+
+.footer-link {
+    text-align: center;
+    margin: 15px auto 0;
+    ul {
+        display: inline-block;
+        li {
+            display: inline-block;
+            color: #b8b8b8;
+            font-size: 12px;
+            a {
+                color: #787878;
+                display: inline-block;
+                padding: 0 10px;
+            }
+        }
+    }
+    span {
+        margin: 5px auto 20px auto;
+        display: block;
+        color: #787878;
+        fotn-size: 11px;
+        -webkit-adjust-font-size: none;
+        text-align: center;
+        a {
+            color: #f96149;
+        }
+    }
+}
+
+.icon-cart {
+    position: relative;
+    .count {
+        display: none;
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        padding: 0 7px;
+        height: 20px;
+        color: #fd5056;
+        line-height: 22px;
+        text-align: center;
+        .border-radius(10px);
+        background-color: #fff;
+    }
+}

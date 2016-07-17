@@ -1,0 +1,46 @@
+@import '_item.less';
+.m-buyer-shop {
+    margin-bottom: 10px;
+    display: block;
+}
+
+.list {
+    // 店铺标题
+    &.list-store-sm {
+        background-color: #fff;
+        .item {
+            .item-avatar-mixin(30px, 1);
+            .info {
+                h3 {
+                    line-height: 30px;
+                }
+                &.has-status {
+                    padding-right: 70px;
+                    position: relative;
+                }
+                .order-status {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 70px;
+                    text-align: right;
+                    .text-ellipsis;
+                    line-height: 30px;
+                    color: @primary;
+                }
+            }
+        }
+    }
+    &.list-order-goods {
+        .img-border {
+            border-color: @border-color;
+        }
+        .item {
+            background-color: @bg-color;
+            border-bottom: 1px dashed @border-color;
+            &:last-child {
+                border-bottom: 0 none;
+            }
+        }
+    }
+}

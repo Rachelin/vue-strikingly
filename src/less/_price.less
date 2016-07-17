@@ -1,0 +1,102 @@
+
+.good-item {
+    position: relative;
+    .goods-cart {
+        position: absolute;
+        right: 0;
+        bottom: -4px;
+        width: 30px;
+        height: 30px;
+        overflow: hidden;
+        background: url('@{img}/goods-cart.png') center center no-repeat;
+        background-size: 15px 14px;
+    }
+}
+// 价格
+.new-price,
+.old-price,
+.rebate-price {
+    display: inline-block;
+    line-height: 18px;
+    margin-right: 5px;
+}
+
+.new-price {
+    color: @primary;
+    .num {
+        .font-size-lg;
+    }
+}
+
+.old-price {
+    color: @text-gray-light;
+    text-decoration: line-through;
+    .font-size-sm;
+    .num {
+        text-decoration: line-through;
+        color: @text-gray-light;
+        .font-size-sm;
+    }
+}
+
+.rebate-price {
+    margin-top: 2px;
+    line-height: 14px;
+    .rebate-txt {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        line-height: 14px;
+        background-color: #ef082e;
+        color: #fff;
+        text-align: center;
+        .border-radius(3px);
+        vertical-align: top;
+        margin-right: 2px;
+        .font-size-sm;
+        &:before {
+            content: '返';
+        }
+    }
+    .rebate-txt-app {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        line-height: 14px;
+        background-color: #ef082e;
+        color: #fff;
+        text-align: center;
+        .border-radius(3px);
+        vertical-align: top;
+        margin-right: 2px;
+        .font-size-sm;
+        &:before {
+            content: '赚';
+        }
+    }
+    .num {
+        color: @primary;
+        .font-size;
+    }
+}
+
+
+span.rebate-price {
+    display: inline-block;
+}
+
+p.rebate-price {
+    display: block;
+}
+
+// .price-info {
+//     line-height: 18px;
+// }
+
+.u-limitbuy {
+    border: 1px solid @primary;
+    color: @primary;
+    display: inline-block;
+    line-height: 16px;
+    padding: 0 5px;
+}

@@ -1,0 +1,64 @@
+.m-remark-img(@remark: 30px, @padding: 10px) {
+    position: relative;
+    .u-remark {
+        width: @remark;
+        z-index: 1;
+        position: absolute;
+        top: 0;
+        &.u-remark-md {
+            width: @remark * 1.7;
+        }
+    }
+    .u-right {
+        &.u-align-0 {
+            right: @padding;
+        }
+        &.u-align-1 {
+            right: @padding*2 + @remark;
+        }
+        &.u-align-2 {
+            right: @padding * 3 + @remark *2;
+        }
+        &.u-align-3 {
+            right: @padding * 4 + @remark *3;
+        }
+        &.u-align-4 {
+            right: @padding * 5 + @remark *4;
+        }
+    }
+    .u-left {
+        &.u-align-0 {
+            left: @padding;
+        }
+        &.u-align-1 {
+            left: @padding*2 + @remark;
+        }
+        &.u-align-2 {
+            left: @padding * 3 + @remark *2;
+        }
+        &.u-align-3 {
+            left: @padding * 4 + @remark *3;
+        }
+        &.u-align-4 {
+            left: @padding * 5 + @remark *4;
+        }
+    }
+}
+
+.m-remark-img-md {
+    .m-remark-img(30px, 10px);
+}
+
+.m-remark-img-sm {
+    .m-remark-img(20px, 5px);
+}
+
+.u-remark-txt {
+    display: inline-block;
+    line-height: 20px;
+    .border-radius(3px);
+    margin-right: 5px;
+    padding: 0 5px;
+    text-align: center;
+    color: #fff;
+}

@@ -1,0 +1,225 @@
+.scrollable() {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+// Border
+// -------------------------------
+.border-radius (@radius: 5px) {
+    -webkit-border-radius: @radius;
+    -moz-border-radius: @radius;
+    border-radius: @radius;
+}
+
+.border-radius-custom (@topleft: 5px, @topright: 5px, @bottomleft: 5px, @bottomright: 5px) {
+    -webkit-border-radius: @arguments;
+    -moz-border-radius: @arguments;
+    border-radius: @arguments;
+}
+
+// Box-shadow
+// -------------------------------
+.box-shadow (@x: 0px, @y: 3px, @z: 0px, @blur: 5px, @alpha: 0.5) {
+    -webkit-box-shadow: @x @y @z @blur rgba(0, 0, 0, @alpha);
+    -moz-box-shadow: @x @y @z @blur rgba(0, 0, 0, @alpha);
+    -o-box-shadow: @x @y @z @blur rgba(0, 0, 0, @alpha);
+    box-shadow: @x @y @z @blur rgba(0, 0, 0, @alpha);
+}
+
+.inner-shadow (@param1, @param2, @param3, @opacity) {
+    -webkit-box-shadow: inset @param1 @param2 @param3 rgba(0, 0, 0, @opacity);
+    -moz-box-shadow: inset @param1 @param2 @param3 rgba(0, 0, 0, @opacity);
+    box-shadow: inset @param1 @param2 @param3 rgba(0, 0, 0, @opacity);
+}
+
+// Transition
+// -------------------------------
+.transition (@prop: @prop, @time: 1s, @ease: linear) {
+    -webkit-transition: @prop @time @ease;
+    -moz-transition: @prop @time @ease;
+    -o-transition: @prop @time @ease;
+    -ms-transition: @prop @time @ease;
+    transition: @prop @time @ease;
+}
+
+// Transform
+// -------------------------------
+.transform (@rotate: 90deg, @scale: 1, @skew: 1deg, @translate: 10px) {
+    -webkit-transform: rotate(@rotate) scale(@scale) skew(@skew) translate(@translate);
+    -moz-transform: rotate(@rotate) scale(@scale) skew(@skew) translate(@translate);
+    -o-transform: rotate(@rotate) scale(@scale) skew(@skew) translate(@translate);
+    -ms-transform: rotate(@rotate) scale(@scale) skew(@skew) translate(@translate);
+    transform: rotate(@rotate) scale(@scale) skew(@skew) translate(@translate);
+}
+
+.translate (@width: -50%, @height: 0) {
+    -webkit-transform: translate(@width, @height);
+    -moz-transform: translate(@width, @height);
+    -o-transform: translate(@width, @height);
+    transform: translate(@width, @height);
+}
+
+// Box sizing
+// --------------------------------------------------
+.box-sizing (@boxmodel) {
+    -webkit-box-sizing: @boxmodel;
+    -moz-box-sizing: @boxmodel;
+    -o-box-sizing: @boxmodel;
+    box-sizing: @boxmodel;
+}
+
+// Gradients
+// -------------------------------
+.gradient (@origin: top, @startColor, @endColor) {
+    // background-color: @startColor/2 + @endColor/2;
+    background-image: -webkit-linear-gradient(@origin, @startColor, @endColor);
+    background-image: -moz-linear-gradient(@origin, @startColor, @endColor);
+    background-image: -o-linear-gradient(@origin, @startColor, @endColor);
+    background-image: -ms-linear-gradient(@origin, @startColor, @endColor);
+    background-image: linear-gradient(@origin, @startColor, @endColor);
+}
+
+.quick-gradient (@origin: left, @alpha: 0.2) {
+    background-image: -webkit-linear-gradient(@origin, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, @alpha));
+    background-image: -moz-linear-gradient(@origin, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, @alpha));
+    background-image: -o-linear-gradient(@origin, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, @alpha));
+    background-image: -ms-linear-gradient(@origin, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, @alpha));
+    background-image: linear-gradient(@origin, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, @alpha));
+}
+
+// Trangle
+// -------------------------------
+.triangle-base () {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+}
+
+.triangle (@direction, @size, @color) {
+    .triangle(@direction, @size * 2, @size, @color);
+}
+
+.triangle (@direction, @width, @height, @color) when (@direction =up) {
+    .triangle-base();
+    border-left: (@width / 2)dashed transparent;
+    border-right: (@width / 2)dashed transparent;
+    border-bottom: @height solid @color;
+}
+
+.triangle (@direction, @width, @height, @color) when (@direction =down) {
+    .triangle-base();
+    border-left: (@width / 2) dashed transparent;
+    border-right: (@width / 2) dashed transparent;
+    border-top: @height solid @color;
+}
+
+.triangle (@direction, @width, @height, @color) when (@direction =left) {
+    .triangle-base();
+    border-top: (@width / 2) dashed transparent;
+    border-bottom: (@width / 2) dashed transparent;
+    border-right: @height solid @color;
+}
+
+.triangle (@direction, @width, @height, @color) when (@direction =right) {
+    .triangle-base();
+    border-top: (@width / 2) dashed transparent;
+    border-bottom: (@width / 2) dashed transparent;
+    border-left: @height solid @color;
+}
+
+// psis
+// -------------------------------
+.text-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    -webkit-text-overflow: ellipsis;
+    -khtml-text-overflow: ellipsis;
+    -icab-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.m-ellipsis (@multiline){
+    display: -webkit-box !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: @multiline;
+
+}
+// Opacity
+// -------------------------------
+.opacity (@opacity) {
+    @opa: (@opacity*100);
+    filter: alpha(opacity=@opa);
+    opacity: @opacity;
+}
+// Placeholder text
+// --------------------------------------------------
+.placeholder (@color: @input-color-placeholder,
+@text-indent: 0) {
+    &::-moz-placeholder {
+        // Firefox 19+
+        color: @color;
+    }
+
+    &:-ms-input-placeholder {
+        color: @color;
+    }
+
+    &::-webkit-input-placeholder {
+        color: @color;
+        // Safari placeholder margin issue
+        text-indent: @text-indent;
+    }
+}
+.h-lh (@size: 24px) {
+    height: @size;
+    line-height: @size;
+    .text-ellipsis;
+}
+.font-size (@size: 12px) {
+    font-size: @size
+;
+}
+.font-size-sg {
+    .font-size(16px);
+}
+.font-size-lg {
+    .font-size(15px);
+}
+.font-size-md {
+    .font-size(14px);
+}
+.font-size {
+    .font-size(12px);
+}
+.font-size-sm {
+    .font-size(10px);
+}
+// skin
+.s-primary {
+    color: @primary !important;
+}
+.s-balanced {
+    color: @balanced !important;
+}
+.s-orange {
+    color: @orange !important;
+}
+.s-blue {
+    color: @blue !important;
+}
+.s-gray{
+    color:@text-gray-light !important;
+}
+// 分割线
+.l-separate {
+    display: inline-block;
+    border-bottom: 1px #c2c2c2 solid;
+    width: 50px;
+    vertical-align: 4px;
+    margin: 0 16px;
+}
