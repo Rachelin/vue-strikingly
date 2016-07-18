@@ -1,0 +1,43 @@
+
+
+.transform-color(@start, @end, @startStr, @endStr) {
+    background-color: @end;
+    background-repeat: repeat-x;
+    background-image: -webkit-linear-gradient(top,@start,@end);
+    background-image: linear-gradient(to bottom,@start,@end);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=@startStr,endColorstr=@endStr,GradientType=0)
+}
+
+.dark-blue {
+    .transform-color(#77c, #55a, '#7777cc', '#5555aa');
+}
+
+.gray {
+    .transform-color(#bbb, #888, '#bbbbbb', '#888888');
+}
+
+.green {
+    .transform-color(#92ba00, #77b30c, '#92ba00', '#77b30c');
+}
+
+.dark-green {
+    .transform-color(#718521, #54701c, '#718521', '#54701c');
+}
+
+.orange {
+    .transform-color(#fa0, #ff840d, '#ffaa00', '#ff840d');
+}
+
+.purple {
+    .transform-color(#d3c, #c840a6, '#dd33cc', '#c840a6');
+}
+
+.red {
+    .transform-color(#f21, #d21, '#ff2211', '#dd2211');
+}
+
+.shadow-text {
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+    box-shadow: inset 0 1px rgba(255,255,255,0.3),0 1px 2px rgba(0,0,0,0.4);
+}
