@@ -215,11 +215,12 @@
 .s-gray{
     color:@text-gray-light !important;
 }
-// 分割线
-.l-separate {
-    display: inline-block;
-    border-bottom: 1px #c2c2c2 solid;
-    width: 50px;
-    vertical-align: 4px;
-    margin: 0 16px;
+//
+
+.transform-color(@start, @end, @startStr, @endStr) {
+    background-color: @end;
+    background-repeat: repeat-x;
+    background-image: -webkit-linear-gradient(top,@start,@end);
+    background-image: linear-gradient(to bottom,@start,@end);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=@startStr,endColorstr=@endStr,GradientType=0)
 }

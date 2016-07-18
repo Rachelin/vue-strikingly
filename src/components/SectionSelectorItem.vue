@@ -5,7 +5,7 @@
             简易商店
         </div>
 
-        <div class="section-button">
+        <div class="selector section-button">
             <div class="img-wrapper">
                 <img class="lazy" src="//assets.strikingly.com/assets/v4/ion/sections/ecommerce/thumbnail/cover.png">
             </div>
@@ -51,9 +51,8 @@ export default {
         border-bottom: 1px solid rgba(97,75,131,0.5);
         padding-top: 5px;
     }
-    
-    // ----------
-    .section-button {
+
+    .selector.section-button {
         position: relative;
         height: auto;
         min-height: 80px;
@@ -63,6 +62,8 @@ export default {
         margin-bottom: 15px;
         box-shadow: 0 0 2px 1px #ccc;
     }
+    
+    // ----------
 
     .img-wrapper {
         position: relative;

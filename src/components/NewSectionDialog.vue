@@ -4,7 +4,7 @@
       <h3 class="caps center">
         添加新版块
       </h3>
-      <div class="close-button">
+      <div class="close-button" @click="hidden">
         <h4>
           <a>x</a>
         </h4>
@@ -33,16 +33,26 @@ export default {
 
     components: {
         SectionSelectorItem
-    }
+    },
+
+    data() {
+      return {
+        show: false
+      }
+    },
+
+    methods: {
+      hidden () {
+        this.$parent.showDialog = false
+      }
+    },
 }
 </script>
 
 
 <style lang="less">
-    @import '../less/_reset.less';
 
 // common
-
 .s-mac-no-text-shadow * {
   text-shadow: none! important;
 }
@@ -56,7 +66,6 @@ export default {
 }
 
 // ----------
-
 #new-section-dialog h1, 
 #new-section-dialog h2, 
 #new-section-dialog h3, 
@@ -79,12 +88,10 @@ export default {
     font-family: 'pragmatica',sans-serif;
     width: 300px;
     height: 100%;
-    display: none;
     top: 0;
     box-shadow: 0 1px 8px rgba(0,0,0,0.7);
     background: #fff;
     position: fixed;
-    left: 200px;
     overflow: hidden;
     background: #eee;
     z-index: 1999;
@@ -153,5 +160,18 @@ export default {
 
     .section-gallery {
     }
+}
+
+
+.fade-transition {
+    left: 220px;
+    transition: all .3s ease;
+    opacity: 1;
+}
+ 
+.fade-leave,
+.fade-enter {
+    opacity: 0;
+    left: -100px;
 }
 </style>
