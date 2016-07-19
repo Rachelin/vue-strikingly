@@ -1,7 +1,7 @@
 <template>
-    <menu-container :menu-list.sync="menuList" v-on:toggle-section-dialog="handleIt"></menu-container>
-    <new-section-dialog v-if="showDialog" transition="fade" keep-alive></new-section-dialog>
-    <content :components-list="menuList"></content>
+    <menu-container :menu-list.sync="menuList" :handle-id.sync="handleId" v-on:toggle-section-dialog="toggleDialog"></menu-container>
+    <new-section-dialog v-if="showDialog" transition="fade" keep-alive v-on:add-new-section="addNewSection"></new-section-dialog>
+    <content :components-list="menuList" :handle-id.sync="handleId"></content>
 </template>
 
 <script>
@@ -23,23 +23,25 @@ export default {
             menuList: [
                 {
                     name: '标题',
-                    id: 'title'
+                    component: 'Test'
                 },
                 {
                     name: '标题1',
-                    id: 'title1'
+                    component: 'Test'
                 },
                 {
                     name: '标题2',
-                    id: 'title2'
+                    component: 'Test'
                 },
                 {
                     name: '标题3',
-                    id: 'title3'
+                    component: 'Test'
                 }
             ],
 
             showDialog: false,
+
+            handleId: 0
         }
     },
 
@@ -47,9 +49,23 @@ export default {
     },
 
     methods: {
-        handleIt () {
+        toggleDialog () {
             this.showDialog = !this.showDialog;
-        }
+        },
+
+        addNewSection () {
+            console.log("addNewSection")
+            this.menuList.push({
+                name: '标题新' + this.menuList.length,
+                component: 'Test'
+            })
+        },
+
+        // onScroll (index) {
+        //     console.log("2: onScroll index = ", index)
+        //     this.$broadcast('to-scroll', index)
+        // },
+
     },
 
 }

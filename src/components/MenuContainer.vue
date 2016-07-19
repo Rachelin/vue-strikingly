@@ -23,14 +23,14 @@
                                             <div class="sections">
                                                 <div class="section">
                                                     <div class="move icon"></div>
-                                                    <div class="div" v-show="selectedId === $index">
+                                                    <div class="div" v-show="handleId === $index">
                                                         <div class="settings icon"><span class="fa fa-cog"></span></div>
                                                         <div class="delete icon" rel="tooltip" title data-original-title="删除此版块" @click="remove"></div>
                                                         <div class="menu-btn section-button selected">
                                                             {{section.name}}
                                                         </div>
                                                     </div>
-                                                    <div  v-show="selectedId != $index" class="menu-btn section-button" @click="selectIt($index)">
+                                                    <div v-show="handleId != $index" class="menu-btn section-button" @click="selectIt($index)">
                                                         {{section.name}}
                                                     </div>
                                                 </div>
@@ -60,13 +60,8 @@ export default {
     name: 'MenuContainer',
 
     props: {
-        menuList: Array
-    },
-
-    data() {
-        return {
-            selectedId: -1
-        }
+        menuList: Array,
+        handleId: Number
     },
 
     computed: {
@@ -92,13 +87,14 @@ export default {
         remove () {
             var del = confirm("您确定要删除吗？")
             if(del) {
-                this.menuList.splice(this.selectedId, 1)
-                this.selectedId = -1
+                this.menuList.splice(this.handleId, 1)
+                this.handleId = -1
             }
         },
 
         selectIt (index) {
-            this.selectedId = index
+            this.handleId = index
+            this.$parent.$broadcast('scroll-to', index)
         },
 
         toggleNewSection () {

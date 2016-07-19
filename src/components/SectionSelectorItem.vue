@@ -5,7 +5,7 @@
             简易商店
         </div>
 
-        <div class="selector section-button">
+        <div class="selector section-button" @click="dispathAddSection">
             <div class="img-wrapper">
                 <img class="lazy" src="//assets.strikingly.com/assets/v4/ion/sections/ecommerce/thumbnail/cover.png">
             </div>
@@ -26,7 +26,13 @@
 
 <script>
 export default {
-    name: 'SectionSelectorItem'
+    name: 'SectionSelectorItem',
+
+    methods: {
+        dispathAddSection () {
+            this.$dispatch('add-new-section')
+        }
+    }
 }
 </script>
 
