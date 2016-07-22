@@ -16,7 +16,11 @@
           <div class="inner">
               <div class="section-gallery">
                   <div class="clearfix">
-                      <section-selector-item v-for="n in 10"></section-selector-item>
+                      <section-selector-item 
+                        v-for="item in sectionMap"
+                        :section-info='item'
+                        :level="item.level">
+                      </section-selector-item>
                   </div>
               </div>
           </div>
@@ -37,7 +41,75 @@ export default {
 
     data() {
       return {
-        show: false
+        show: false,
+        sectionMap: [
+          { 
+            levelName: '基础模块',
+            name: '测试模块',
+            component: 'Test',
+            level: 1,
+            tip: '这是测试组件'
+          },
+
+          {
+            name: '商品列表',
+            component: 'GoodsList',
+            level: 1,
+            tip: '展示您的商品'
+          },
+
+          {
+            name: '特殊商品',
+            component: 'GoodsPlus',
+            level: 1,
+            tip: '加强版商品'
+          },
+
+          {
+            name: 'Banner',
+            component: 'Banner',
+            level: 1,
+            tip: '这是啥我也不知道'
+          },
+
+          {
+            name: '图片合集',
+            component: 'ImageTab',
+            level: 1,
+            tip: '宣传图片展示'
+          },
+
+          {
+            name: '文字集合',
+            component: 'TextTab',
+            level: 1,
+            tip: '文字展示'
+          },
+
+          {
+            name: '定时器',
+            component: 'Timer',
+            level: 1,
+            tip: '活动倒计时'
+          },
+
+          {
+            name: '图片导航',
+            component: 'PictureNative',
+            level: 2,
+            tip: '图片引导导航',
+            icon: 'fa-picture-o'
+          },
+
+          {
+            name: '锚点导航',
+            component: 'Anchor',
+            level: 2,
+            tip: '文本导航条',
+            icon: 'fa-anchor'
+          },
+
+        ]
       }
     },
 
@@ -161,7 +233,6 @@ export default {
     .section-gallery {
     }
 }
-
 
 .fade-transition {
     left: 220px;

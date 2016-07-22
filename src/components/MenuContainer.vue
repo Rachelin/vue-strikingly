@@ -66,28 +66,26 @@ export default {
 
     computed: {
         options() {
-            return JSON.stringify({
+            let that = this
+            return {
                 group: 'menu',
                 animation: 200,
-                handle: '.move'
-            })
+                handle: '.move',
+                onEnd : function (evt) {
+                    //evt.oldIndex;  // element's old index within parent
+                    //evt.newIndex;  // element's new index within parent
+                    that.handleId = evt.newIndex;
+                },
+            }
         }
-        
     },
 
     methods: {
-        add () {
-            // this.menuList.push();
-        },
-        
-        replace () {
-            // this.list=[{name:'Edgard'}]
-        },
 
         remove () {
             var del = confirm("您确定要删除吗？")
             if(del) {
-                this.menuList.splice(this.handleId, 1)
+                let t = this.menuList.splice(this.handleId, 1)
                 this.handleId = -1
             }
         },

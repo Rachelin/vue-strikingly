@@ -1,19 +1,42 @@
+<!--
+ @theme : 编辑展示区
+ @author: wuxiaolian
+ @date  : 201607018
+-->
+
 <template>
     <div id="s-content" class="transition side-menu-opened">
         <!-- <div class="social-thumbnail"> </div> -->
-        <div id="phone-simulater" v-el:simulater>
-            <div class="ul-component" v-for="item in componentsList">
-                <test :is="item.component" data-index="{{$index}}">
-                    <p slot="order">{{item.name}}</p>
-                </test>
-            </div>
+        <ul id="phone-simulater" v-el:simulater class="simulater slides">
+
+            <li class="slide" v-for="comp in componentsList" data-index="{{$index}}" id="section-{{$index}}">
+
+                <div v-if="comp.component=='GoodsList'" class="s-section s-store-section">
+                    <div class="s-section-editor-wrapper"></div>
+                    <goods-list 
+                        :goods-list.sync="comp.data"
+                        :type="comp.type">
+                    </goods-list>
+                </div>
+                
+
+            </li>
             
-        </div>
+        </ul>
     </div>
 </template>
 
 <script>
-import Test from './Test.vue'
+import Test             from './Test.vue'
+import GoodsList        from './GoodsList.vue'
+// import GoodsPlus        from './GoodsPlus.vue'
+// import Anchor           from './Anchor.vue'
+// import Banner           from './Banner.vue'
+// import ImageTab         from './ImageTab.vue'
+// import PictureNative    from './PictureNative.vue'
+// import TextTab          from './TextTab.vue'
+// import Timer            from './Timer.vue'
+
 
 export default {
     name: 'Content',
@@ -33,26 +56,29 @@ export default {
     },
 
     components: {
-        Test
+        Test,
+        GoodsList,
+        // GoodsPlus,
+        // Anchor,
+        // Banner,
+        // ImageTab,
+        // PictureNative,
+        // TextTab,
+        // Timer
     },
 
     methods: {
         setElesOffsetTop () {
             let traget = this.$els.simulater
             this.componentsList.forEach(function(ele, i){
-                let current = traget.querySelector('div[data-index="'+i+'"]')
+                let current = traget.querySelector('li[id=section-'+i+']')
                 let curDis = current.offsetTop;
                 ele.offsetTop = curDis
                 ele.sectionHeight = current.scrollHeight
-                console.log(curDis)
             })
-            console.log("update the componentsList data")
         },
 
-        onScroll () {
-            // on Listener the upper sections
-            console.log("scrolling-========= handleId", this.handleId)
-            
+        onScroll () {        
             if(!this.doAutoScroll) {
                 setTimeout(this.calcScrollAt(), 1000)
             }
@@ -75,9 +101,9 @@ export default {
                 this.handleId = minIndex
             } 
         },
+
         scrollTo (index) {
-            console.log("this.handleId", index)
-            this.offsetTop = this.componentsList[index].offsetTop -  this.$els.simulater.scrollTop 
+            this.offsetTop = this.componentsList[index].offsetTop - this.$els.simulater.scrollTop 
             this.reqId = requestAnimationFrame(this.autoScroll);
         },
 
@@ -132,8 +158,6 @@ export default {
             this.scrollTo(index)
         }
     }
-
-
 }
 </script>
 
@@ -154,19 +178,19 @@ export default {
     }
 
     @media only screen and (max-width: 769px) {
-        padding: 7.5% 20%;
+        padding: 7.5% 8.5%;
     }
 
     @media only screen and (max-width: 1023px) {
-        padding: 7% 20%;
+        padding: 7% 7.5%;
     }
 
     @media only screen and (max-width: 1269px) {
-        padding: 6% 20%;
+        padding: 6% 9%;
     }
 
     @media only screen and (max-width: 1569px) {
-        padding: 5.5% 20%;
+        padding: 5.5% 10%;
     }
 
 }
@@ -178,13 +202,38 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-
     border: 1px solid #eee;
     width: 365px;
     height: 667px;
-    background-color: #efeff4;
-    font: 16px/150% "\5FAE\8F6F\96C5\9ED1",Arial,Helvetica,sans-serif;
-    color: #333;
+    float: none;
+
+    &:before,
+    &:after {
+        display: table;
+        content: '';
+        zoom: 1;
+    }
+}
+
+ul.slides, 
+li.slide {
+    position: relative;
+    outline: none;
+    
+}
+
+.s-section {
+    padding: 80px 0;
+    line-height: 1.45;
+    color: #555;
+}
+
+.s-section-editor-wrapper {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    z-index: 200;
+    pointer-events: none;
 }
 
 </style>

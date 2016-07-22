@@ -1,8 +1,13 @@
 <template>
     <div class="s-section-selector-item">
-        <div class="highlight selction-title-v4">
-            <span class="fa fa-shopping-cart icon"></span>
-            简易商店
+
+        <div v-if="sectionInfo.levelName" class="base selction-title-v4 highlight">
+            {{sectionInfo.levelName}}
+        </div>
+
+        <div class="selction-title-v4" :class="highlight">
+            <span class="fa icon {{sectionInfo.icon}}"></span>
+            {{sectionInfo.name}}
         </div>
 
         <div class="selector section-button" @click="dispathAddSection">
@@ -14,7 +19,7 @@
                     <div class="cover-inner">
                         <div class="info">
                             <div class="description">
-                                您可以开始您的旅程
+                                {{sectionInfo.tip}}
                             </div>
                         </div>
                     </div>
@@ -28,9 +33,22 @@
 export default {
     name: 'SectionSelectorItem',
 
+    props: {
+        sectionInfo: Object,
+        level: Number
+    },
+
+    computed: {
+        highlight () {
+            if(this.sectionInfo.level > 1) {
+                return 'highlight'
+            }
+        }
+    },
+
     methods: {
         dispathAddSection () {
-            this.$dispatch('add-new-section')
+            this.$dispatch('add-new-section', this.sectionInfo.name, this.sectionInfo.component)
         }
     }
 }
@@ -56,6 +74,10 @@ export default {
         font-weight: bold;
         border-bottom: 1px solid rgba(97,75,131,0.5);
         padding-top: 5px;
+    }
+    
+    .base.highlight {
+        margin-bottom: 10px;
     }
 
     .selector.section-button {
