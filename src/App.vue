@@ -1,5 +1,7 @@
 <template>
-    <menu-container 
+    <p>上传代码</p>
+    <upload-image></upload-image>
+    <!-- <menu-container 
         :menu-list.sync="menuList" 
         :handle-id.sync="handleId" 
         v-on:toggle-section-dialog="toggleDialog">
@@ -15,13 +17,17 @@
     <content 
         :components-list="menuList" 
         :handle-id.sync="handleId">
-    </content>
+    </content> -->
+
+    <!-- <div v-loading="$loadingRouteData"></div> -->
 </template>
 
 <script>
+import loading from 'vue-loading'
 import NewSectionDialog from './components/NewSectionDialog.vue'
 import MenuContainer from './components/MenuContainer.vue'
 import Content from './components/Content.vue'
+import UploadImage from './components/UploadImage.vue'
 
 export default {
     name: 'App',
@@ -29,7 +35,8 @@ export default {
     components : {
         MenuContainer,
         NewSectionDialog,
-        Content
+        Content,
+        UploadImage
     },
 
     data() {
@@ -49,12 +56,12 @@ export default {
             let menuList = []
             this.params.forEach(function(t, i) {
                 switch (t.type) {
-                    case 'imagtab':
+                    case 'imagetab':
                         menuList.push({
-                            name: 'imagtab',
+                            name: 'imagetab',
                             component: 'ImageTab',
                             data: t.items,
-                            type: 'imagtab'
+                            type: 'imagetab'
                         })
                         break;
                     case 'navigation':
@@ -65,6 +72,30 @@ export default {
                             type: 'navigation'
                         })
                         break;
+                    case 'banner':
+                        menuList.push({
+                            name: 'banner',
+                            component: 'Banner',
+                            data: t.items,
+                            type: 'banner'
+                        })
+                        break;
+                    case 'goods_one':
+                        menuList.push({
+                            name: 'goods_one',
+                            component: 'GoodsList',
+                            data: t.items,
+                            type: 'goods_one'
+                        })
+                        break;
+                    // case 'picturenative':
+                    //     menuList.push({
+                    //         name: 'picturenative',
+                    //         component: 'PictureNative',
+                    //         data: t.items,
+                    //         type: 'picturenative'
+                    //     })
+                    //     break;
                 }
             })
 
@@ -75,15 +106,15 @@ export default {
     },
 
     created() {
-        this.$http.get('activity/crossBorder/345?token=GEOEBJ8n9qpUqgI2gmpL')
+        this.$http.get('activity/crossBorder/447?token=01vyORT9mrGXDWxpd1im')
         .then((response) => {
-            // console.log(response)
+            console.log(response)
             let res = response.json()
             if( res.ret === 0 ) {
                 let t = res.data;
                 this.$set('params', t.params)
             } else {
-                console.log("fail")
+                console.error("xiaolian＝＝》TOKEN IS FAILED")
             }
         }, (response) => {
             console.log(response)
@@ -106,6 +137,13 @@ export default {
 
     },
 
+    // router: {
+    //     data(transition) {
+    //         window.setTimeout(() => {
+    //             transient.next()
+    //         }, 3000)
+    //     }
+    // }
 }
 
 </script>

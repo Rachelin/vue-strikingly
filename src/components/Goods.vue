@@ -74,18 +74,13 @@ export default {
         index: Number
     },
 
-    data () {
-        var that = this
-        return {
-            delGoods: function () {
-                that.$parent.goodsList.splice(this.index, 1)
-            }
-        }
-    },
-
     methods: {
         changeGoods () {
             console.log("this.item.id = ", this.item.id )
+        },
+
+        delGoods () {
+            this.$parent.goodsList.splice(this.index, 1)
         }
     }
 

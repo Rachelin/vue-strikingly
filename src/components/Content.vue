@@ -12,14 +12,39 @@
             <li class="slide" v-for="comp in componentsList" data-index="{{$index}}" id="section-{{$index}}">
 
                 <div v-if="comp.component=='GoodsList'" class="s-section s-store-section">
-                    <div class="s-section-editor-wrapper"></div>
                     <goods-list 
                         :goods-list.sync="comp.data"
                         :type="comp.type">
                     </goods-list>
                 </div>
-                
 
+                <div v-if="comp.component =='Banner'" class="s-section s-banner-section">
+                    <banner :items.sync="comp.data"></banner>
+                </div>
+
+                <div v-if="comp.component =='GoodsPlus'" class="s-section s-goods-section">
+                    <goods-plus :items.sync="comp.data"></goods-plus>
+                </div>
+
+                <div v-if="comp.component =='Anchor'" class="s-section s-anchor-section">
+                    <anchor :items.sync="comp.data"></anchor>
+                </div>
+
+                <div v-if="comp.component =='ImageTab'" class="s-section s-imagetab-section">
+                    <image-tab :items.sync="comp.data"></image-tab>
+                </div>
+
+                <div v-if="comp.component =='PictureNative'" class="s-section s-nav-section">
+                    <picture-native :items.sync="comp.data"></picture-native>
+                </div>
+
+                <div v-if="comp.component =='TextTab'" class="s-section s-text-section">
+                    <text-tab :items.sync="comp.data"></text-tab>
+                </div>
+
+                <div v-if="comp.component =='Timer'" class="s-section s-timer-section">
+                    <timer :items.sync="comp.data"></timer>
+                </div>
             </li>
             
         </ul>
@@ -29,13 +54,13 @@
 <script>
 import Test             from './Test.vue'
 import GoodsList        from './GoodsList.vue'
-// import GoodsPlus        from './GoodsPlus.vue'
-// import Anchor           from './Anchor.vue'
-// import Banner           from './Banner.vue'
-// import ImageTab         from './ImageTab.vue'
-// import PictureNative    from './PictureNative.vue'
-// import TextTab          from './TextTab.vue'
-// import Timer            from './Timer.vue'
+import Banner           from './Banner.vue'
+import GoodsPlus        from './GoodsPlus.vue'
+import Anchor           from './Anchor.vue'
+import ImageTab         from './ImageTab.vue'
+import PictureNative    from './PictureNative.vue'
+import TextTab          from './TextTab.vue'
+import Timer            from './Timer.vue'
 
 
 export default {
@@ -58,13 +83,13 @@ export default {
     components: {
         Test,
         GoodsList,
-        // GoodsPlus,
-        // Anchor,
-        // Banner,
-        // ImageTab,
-        // PictureNative,
-        // TextTab,
-        // Timer
+        GoodsPlus,
+        Anchor,
+        Banner,
+        ImageTab,
+        PictureNative,
+        TextTab,
+        Timer
     },
 
     methods: {

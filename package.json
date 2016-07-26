@@ -18,9 +18,16 @@
     ]
   },
   "dependencies": {
-    "vue": "^1.0.16",
+    "firebase": "^3.2.0",
+    "vue": "^1.0.26",
+    "vue-file-upload": "0.0.6",
+    "vue-file-upload-component": "^1.4.0",
+    "vue-loading": "^0.1.4",
+    "vue-m-carousel": "^1.0.5",
     "vue-resource": "^0.9.3",
-    "vuedragablefor": "^1.0.5"
+    "vue-transfer-dom": "^1.1.0",
+    "vuedragablefor": "^1.0.5",
+    "vuefire": "^1.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",

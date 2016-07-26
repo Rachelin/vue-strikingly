@@ -144,12 +144,4 @@ export default {
     }
 }
 
-.s-repeatable-add-button-wrapper {
-    text-align: center;
-    padding-top: 15px;
-
-    .s-repeateable-add-button {
-        .black-button;
-    }
-}
 </style>

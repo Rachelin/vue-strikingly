@@ -1,17 +1,28 @@
 <template>
     <ul class="m-collection-img clearfix">
         <li v-bind:class="colSet" v-for="item in items">
-            <a href="item.url}" data-record="item.coordinate" data-title="item.title">
-                <img :href="item.image" class="img lazy">
+            <component-editor :delete-self="del" :draggable="(colSet > 1) ? true : false">
+                <span slot="title" @click="showEdit($index)">编辑图片</span>
+                <span slot="image">
+                    <img class="img" :src="item.image">
+                </span>
+            </component-editor>
+            <a href="{{item.url}}" data-title="{{item.title}}">
+                <img :src="item.image" class="img">
             </a>
         </li>
     </ul>
 </template>
 
 <script>
+import ComponentEditor from './ComponentEditor.vue'
 
 export default {
     name: 'ImageTab',
+
+    components: {
+        ComponentEditor
+    },
 
     props: {
         items: Array
@@ -31,6 +42,18 @@ export default {
                     return 'col-3'
             }
         }
+    },
+
+    methods: {
+        del (index) {
+            this.items.splice(index, 1)
+        },
+
+        showEdit (index) {
+            console.log("haha get up", index);
+            this.$broadcast('show-edit')
+            
+        },
     }
 }
 </script>
