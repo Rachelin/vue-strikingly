@@ -12,7 +12,7 @@
 
         <div class="selector section-button" @click="dispathAddSection">
             <div class="img-wrapper">
-                <img class="lazy" src="//assets.strikingly.com/assets/v4/ion/sections/ecommerce/thumbnail/cover.png">
+                <img class="lazy" :src="sectionInfo.image">
             </div>
             <div class="cover-wrapper">
                 <div class="cover">

@@ -1,7 +1,7 @@
 <template>
-    <p>上传代码</p>
-    <upload-image></upload-image>
-    <!-- <menu-container 
+<!--     <p>上传代码</p>
+    <upload-image></upload-image> -->
+    <menu-container 
         :menu-list.sync="menuList" 
         :handle-id.sync="handleId" 
         v-on:toggle-section-dialog="toggleDialog">
@@ -17,7 +17,7 @@
     <content 
         :components-list="menuList" 
         :handle-id.sync="handleId">
-    </content> -->
+    </content>
 
     <!-- <div v-loading="$loadingRouteData"></div> -->
 </template>

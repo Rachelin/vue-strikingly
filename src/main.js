@@ -17,8 +17,12 @@ Vue.config.debug = true;
 Vue.http.options.root = 'http://api.121dian.net'
 
 /* eslint-disable no-new */
-new Vue({
+const firebaseAPI = new Firebase('https://dian-d4098.firebaseio.com/')
+
+var vm = new Vue({
   el: 'body',
-  components: { App }
+  components: { App },
 })
+
+
 

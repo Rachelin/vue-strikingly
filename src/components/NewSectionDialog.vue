@@ -17,7 +17,7 @@
               <div class="section-gallery">
                   <div class="clearfix">
                       <section-selector-item 
-                        v-for="item in sectionMap"
+                        v-for="item in comps"
                         :section-info='item'
                         :level="item.level">
                       </section-selector-item>
@@ -32,6 +32,8 @@
 <script>
 import SectionSelectorItem from './SectionSelectorItem.vue'
 
+// const componentsRef = new Firebase('https://dian-d4098.firebaseio.com/components')
+
 export default {
     name: 'NewSectionDialog',
 
@@ -39,77 +41,13 @@ export default {
         SectionSelectorItem
     },
 
+    firebase: {
+      comps: firebaseAPI.child('components')
+    },
+
     data() {
       return {
         show: false,
-        sectionMap: [
-          { 
-            levelName: '基础模块',
-            name: '测试模块',
-            component: 'Test',
-            level: 1,
-            tip: '这是测试组件'
-          },
-
-          {
-            name: '商品列表',
-            component: 'GoodsList',
-            level: 1,
-            tip: '展示您的商品'
-          },
-
-          {
-            name: '特殊商品',
-            component: 'GoodsPlus',
-            level: 1,
-            tip: '加强版商品'
-          },
-
-          {
-            name: 'Banner',
-            component: 'Banner',
-            level: 1,
-            tip: '这是啥我也不知道'
-          },
-
-          {
-            name: '图片合集',
-            component: 'ImageTab',
-            level: 1,
-            tip: '宣传图片展示'
-          },
-
-          {
-            name: '文字集合',
-            component: 'TextTab',
-            level: 1,
-            tip: '文字展示'
-          },
-
-          {
-            name: '定时器',
-            component: 'Timer',
-            level: 1,
-            tip: '活动倒计时'
-          },
-
-          {
-            name: '图片导航',
-            component: 'PictureNative',
-            level: 2,
-            tip: '图片引导导航',
-            icon: 'fa-picture-o'
-          },
-
-          {
-            name: '锚点导航',
-            component: 'Anchor',
-            level: 2,
-            tip: '文本导航条',
-            icon: 'fa-anchor'
-          },
-
-        ]
       }
     },
 
@@ -118,6 +56,10 @@ export default {
         this.$parent.showDialog = false
       }
     },
+
+    // ready () {
+    //   this.$bindAs
+    // }
 }
 </script>
 
