@@ -7,43 +7,74 @@
 <template>
     <div id="s-content" class="transition side-menu-opened">
         <!-- <div class="social-thumbnail"> </div> -->
+        
         <ul id="phone-simulater" v-el:simulater class="simulater slides">
 
-            <li class="slide" v-for="comp in componentsList" data-index="{{$index}}" id="section-{{$index}}">
+            <li class="slide" v-for="comp in menuList" data-index="{{$index}}" id="section-{{$index}}" track-by="$index">
 
-                <div v-if="comp.component=='GoodsList'" class="s-section s-store-section">
-                    <goods-list 
-                        :goods-list.sync="comp.data"
-                        :type="comp.type">
-                    </goods-list>
+                <div v-if="comp.component =='ImageTab'" class="s-section s-imagetab-section">
+                    <image-tab 
+                        :items.sync="comp.items" 
+                        :type="comp.type"
+                        :id="comp.id"
+                        :visible="comp.is_visible"
+                    ></image-tab>
                 </div>
 
                 <div v-if="comp.component =='Banner'" class="s-section s-banner-section">
-                    <banner :items.sync="comp.data"></banner>
+                    <banner 
+                        :items.sync="comp.items"
+                        :type="comp.type"
+                    ></banner>
+                </div>
+
+                <div v-if="comp.component=='GoodsList'" class="s-section s-store-section">
+                    <goods-list 
+                        :items.sync="comp.items" 
+                        :type="comp.type"
+                        :id="comp.id"
+                        :visible="comp.is_visible"
+                    ></goods-list>
                 </div>
 
                 <div v-if="comp.component =='GoodsPlus'" class="s-section s-goods-section">
-                    <goods-plus :items.sync="comp.data"></goods-plus>
-                </div>
-
-                <div v-if="comp.component =='Anchor'" class="s-section s-anchor-section">
-                    <anchor :items.sync="comp.data"></anchor>
-                </div>
-
-                <div v-if="comp.component =='ImageTab'" class="s-section s-imagetab-section">
-                    <image-tab :items.sync="comp.data"></image-tab>
-                </div>
-
-                <div v-if="comp.component =='PictureNative'" class="s-section s-nav-section">
-                    <picture-native :items.sync="comp.data"></picture-native>
-                </div>
-
-                <div v-if="comp.component =='TextTab'" class="s-section s-text-section">
-                    <text-tab :items.sync="comp.data"></text-tab>
+                    <goods-plus 
+                        :items.sync="comp.items"
+                        :type="comp.type"
+                        :id="comp.id"
+                        :visible="comp.is_visible"
+                    ></goods-plus>
                 </div>
 
                 <div v-if="comp.component =='Timer'" class="s-section s-timer-section">
-                    <timer :items.sync="comp.data"></timer>
+                    <!-- <timer :items.sync="comp.items"></timer> -->
+                    <test> <span slot="order">{{comp.name}}</span> </test>  
+                </div>
+
+                <div v-if="comp.component =='Anchor'" class="s-section s-anchor-section">
+                    <anchor 
+                        :items.sync="comp.items" 
+                        :type="comp.type"
+                    ></anchor>
+                </div>
+
+                <div v-if="comp.component =='TextTab'" class="s-section s-text-section">
+                    <!-- <text-tab :items.sync="comp.items"></text-tab> -->
+                    <test> <span slot="order">{{comp.name}}</span> </test>
+                </div>
+
+                <div v-if="comp.component =='PictureNative'" class="s-section s-nav-section">
+                    <!-- <picture-native :items.sync="comp.items"></picture-native> -->
+                    <test> <span slot="order">{{comp.name}}</span> </test>
+                </div>
+
+                <div v-if="comp.component =='FlashPrice'" class="s-section s-nav-section">
+                    <!-- <flash-price :items.sync="comp.items"></flash-price> -->
+                    <test> <span slot="order">{{comp.name}}</span> </test>
+                </div>
+
+                <div v-if="comp.component =='Test'" class="s-section s-nav-section">
+                    <test> <span slot="order">{{comp.name}}</span> </test>
                 </div>
             </li>
             
@@ -61,6 +92,7 @@ import ImageTab         from './ImageTab.vue'
 import PictureNative    from './PictureNative.vue'
 import TextTab          from './TextTab.vue'
 import Timer            from './Timer.vue'
+import FlashPrice       from './FlashPrice.vue'
 
 
 export default {
@@ -76,7 +108,7 @@ export default {
     },
 
     props: {
-        componentsList: Array,
+        menuList: Array,
         handleId: Number
     },
 
@@ -89,21 +121,23 @@ export default {
         ImageTab,
         PictureNative,
         TextTab,
-        Timer
+        Timer,
+        FlashPrice
     },
 
     methods: {
         setElesOffsetTop () {
+            console.log("changed the component")
             let traget = this.$els.simulater
-            this.componentsList.forEach(function(ele, i){
-                let current = traget.querySelector('li[id=section-'+i+']')
+            this.menuList.forEach(function(ele, i){
+                let current = document.getElementById('section-'+i)
                 let curDis = current.offsetTop;
                 ele.offsetTop = curDis
                 ele.sectionHeight = current.scrollHeight
             })
         },
 
-        onScroll () {        
+        onScroll () {
             if(!this.doAutoScroll) {
                 setTimeout(this.calcScrollAt(), 1000)
             }
@@ -112,23 +146,28 @@ export default {
             if(this.doAutoScroll) return
 
             let st = this.$els.simulater.scrollTop
-            let minIndex = 0
-            let minDis = 1024
-            this.componentsList.forEach((ele, i) => {
-                let curDis = ele.offsetTop + ele.sectionHeight - st
-                if(curDis > 0 && curDis < minDis) {
-                    minDis = curDis
+            let minIndex = this.handleId
+            this.menuList.forEach((ele, i) => {
+                if(st > ele.offsetTop && st < (ele.offsetTop + ele.sectionHeight)){
                     minIndex = i
                 }
             })
 
             if(this.handleId != minIndex){
                 this.handleId = minIndex
+                console.log("change scroll at", this.handleId)
+                if(this.handleId == 2) {
+                    console.log("hahaha")
+                    this.$children[2].isStickUp = true
+                } else {
+                    this.$children[2].isStickUp = false
+                }
             } 
         },
 
         scrollTo (index) {
-            this.offsetTop = this.componentsList[index].offsetTop - this.$els.simulater.scrollTop 
+            console.log("scrollTo ", index)
+            this.offsetTop = this.menuList[index].offsetTop - this.$els.simulater.scrollTop 
             this.reqId = requestAnimationFrame(this.autoScroll);
         },
 
@@ -166,7 +205,7 @@ export default {
         traget.dispatchEvent(new Event('scroll'))
 
         this.setElesOffsetTop()
-        this.$watch( 'componentsList', this.setElesOffsetTop )
+        this.$watch('menuList', this.setElesOffsetTop )
     },
 
     detached () {
@@ -187,6 +226,11 @@ export default {
 </script>
 
 <style lang="less">
+@import '../less/_variable.less';
+@import '../less/_mixin.less';
+@import '../less/_price.less';
+@import '../less/_remark.less';
+@import '../less/_layout.less';
 #s-content {
     position: relative;
     overflow: hidden;
@@ -203,19 +247,19 @@ export default {
     }
 
     @media only screen and (max-width: 769px) {
-        padding: 7.5% 8.5%;
+        padding: 5.5% 8.5%;
     }
 
     @media only screen and (max-width: 1023px) {
-        padding: 7% 7.5%;
+        padding: 5% 7.5%;
     }
 
     @media only screen and (max-width: 1269px) {
-        padding: 6% 9%;
+        padding: 5% 9%;
     }
 
     @media only screen and (max-width: 1569px) {
-        padding: 5.5% 10%;
+        padding: 5% 10%;
     }
 
 }
@@ -229,7 +273,9 @@ export default {
     bottom: 0;
     border: 1px solid #eee;
     width: 365px;
+    min-height: 667px;
     height: 667px;
+
     float: none;
 
     &:before,
@@ -242,15 +288,17 @@ export default {
 
 ul.slides, 
 li.slide {
-    position: relative;
+    // position: relative;
     outline: none;
     
 }
 
 .s-section {
-    padding: 80px 0;
+    padding-bottom: 80px;
     line-height: 1.45;
     color: #555;
+    // margin-bottom: 80px;
+    border: 1px solid;
 }
 
 .s-section-editor-wrapper {

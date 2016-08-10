@@ -4,15 +4,19 @@
     box-shadow: 0 0 1px @border-color;
     background-color: @white;
     li {
-        cursor: pointer;
+        // cursor: pointer;
         float: left;
         text-align: center;
         .font-size-md;
         line-height: 38px;
         border-bottom: 2px solid @white;
         .name {
-            display: block;
+            display: inline-block;
             color: @text-gray-light;
+            width: 100%;
+            &:hover {
+                color: @primary;
+            }
         }
         &.current {
             .name {
@@ -28,6 +32,12 @@
                     color:@dark;
                 }
                 border-bottom:2px solid @dark;
+            }
+
+            .name {
+                &:hover {
+                    color: @dark;
+                }
             }
         }
     }

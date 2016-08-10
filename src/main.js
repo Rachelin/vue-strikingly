@@ -1,28 +1,32 @@
 import Vue from 'vue'
-import Resource from 'vue-resource'
 import Dragable from 'vuedragablefor'
-import VueFire from 'vuefire'
-import Firebase from 'firebase'
-
-// import Vux from 'vux'
+import Resource from 'vue-resource'
 import App from './App.vue'
 
-// install resource
-Vue.use(Resource)
 Vue.use(Dragable)
-Vue.use(VueFire)
 
 Vue.config.devtools = true
 Vue.config.debug = true;
-Vue.http.options.root = 'http://api.121dian.net'
 
 /* eslint-disable no-new */
-const firebaseAPI = new Firebase('https://dian-d4098.firebaseio.com/')
-
-var vm = new Vue({
+new Vue({
   el: 'body',
-  components: { App },
+  components: { App }
 })
 
+// 123,456,798
+Vue.filter('numberStr', {
+    read (val) {
+        return val
+    },
+    // view -> model
+    // 在写回数据之前格式化值
+    write (val, oldVal) {
 
-
+        val = val.replace(/[^0-9, \, ,\s, \，]/g, "");
+        val = val.replace(/\，/g, ","); // 换中文逗号
+        val = val.replace(/\s/g, "");  // 去空格
+        val = val.replace(/\,+/g, ",");
+        return val.replace(/(\,+$)/g, ""); // 去最后一个空格
+    }
+})

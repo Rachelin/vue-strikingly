@@ -8,7 +8,8 @@
                     @mouseover="isComfire=true"
                     @mouseenter="isComfire=true" 
                     @mouseout="isComfire=false"
-                    @click="deleteSelf">
+                    @click="deleteSelf(index)"
+                    >
                     <div class="delete-button-wrap">
                         <div class="delete-button-confirm">确定？</div>
                     </div>
@@ -22,6 +23,10 @@
                     </div>
                 </div>
             </div>
+        </span>
+        
+        <span v-if="!isEdit">
+            <slot name="image"></slot>
         </span>
 
         <span v-if="isEdit">
@@ -43,14 +48,13 @@
                                 </a>
                             </div>
                         </div>
-                    
                         <div class="button-panel">
-                            <input-button :fa-icon="'fa-link'" :param.sync="xiaolian">
+                            <input-button :fa-icon="'fa-link'" :param.sync="link">
                                 <span slot="btname">添加链接</span>
                                 <label slot="ltlable">链接网址</label>
                             </input-button>
 
-                            <input-button :fa-icon="'fa-comment'" :param.sync="xiaolian2">
+                            <input-button :fa-icon="'fa-comment'" :param.sync="comment">
                                 <span slot="btname">添加描述文字</span>
                                 <label slot="ltlable">描述内容</label>
                             </input-button>
@@ -61,21 +65,23 @@
                 </div>
 
                 <div class="clearfix edit-buttons">
-                    <a class="edit-btn green" type="button" @click="">保存</a>
+                    <a class="edit-btn green" type="button" @click="save">保存</a>
                     <a class="edit-btn gray" type="button" @click="isEdit = false">取消</a>
                 </div>
             </div>
         </span>
+        
     </div>
 </template>
 
 <script>
 import InputButton from './InputButton.vue'
+
 export default {
     data () {
         return {
             isComfire : false,
-            isEdit : false,
+            isEdit : false
         }
     },
 
@@ -84,27 +90,35 @@ export default {
     },
 
     props: {
-        deleteSelf : {
+        deleteSelf: {
             type: Function
         },
+
+        index: Number,
         draggable : {
             type: Boolean,
             default: false
-        }
+        },
+        link: {
+            type: String,
+            twoWay: true
+        },
+        comment: {
+            type: String,
+            twoWay: true
+        },
+        broadcastMsg: String
     },
 
     methods : {
         showUpload () {
+            this.$dispatch('onUploadShow', this.broadcastMsg)
+        },
+        save () {
+            this.$dispatch('onSaveInfo')
             this.isEdit = false
         }
     },
-
-    events: {
-        'show-edit': function () {
-            console.log(this.isEdit)
-            this.isEdit = true
-        }
-    }
 }
 </script>
 
@@ -442,4 +456,17 @@ export default {
     margin-bottom: 4px;
  }
 
+input[type="text"] {
+    width: calc(~"100% - 3px");
+    -webkit-box-flex: 1;
+    -webkit-flex: auto;
+    -ms-flex: auto;
+    flex: auto;
+    height: 26px;
+    margin: 0;
+    border: none;
+    padding: 0 5px;
+    border-radius: 0 2px 2px 0;
+    border: 1px solid #505050;
+}
 </style>

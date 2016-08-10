@@ -1,6 +1,4 @@
 <template>
-<!--     <p>上传代码</p>
-    <upload-image></upload-image> -->
     <menu-container 
         :menu-list.sync="menuList" 
         :handle-id.sync="handleId" 
@@ -9,25 +7,28 @@
 
     <new-section-dialog 
         v-if="showDialog" 
-        transition="fade" 
+        transition="fade"
         keep-alive 
         v-on:add-new-section="insertSection">
     </new-section-dialog>
 
     <content 
-        :components-list="menuList" 
+        :menu-list="menuList" 
         :handle-id.sync="handleId">
     </content>
 
-    <!-- <div v-loading="$loadingRouteData"></div> -->
+    <upload-image></upload-image>
+    <notifications></notifications>
 </template>
 
 <script>
-import loading from 'vue-loading'
-import NewSectionDialog from './components/NewSectionDialog.vue'
-import MenuContainer from './components/MenuContainer.vue'
-import Content from './components/Content.vue'
-import UploadImage from './components/UploadImage.vue'
+import NewSectionDialog     from './components/NewSectionDialog.vue'
+import MenuContainer        from './components/MenuContainer.vue'
+import Content              from './components/Content.vue'
+import UploadImage          from './components/UploadImage.vue'
+import Notifications        from './Notifications.vue';
+import {common}             from './store/Common.js'
+import {api}                from './store/Api.js'
 
 export default {
     name: 'App',
@@ -36,114 +37,136 @@ export default {
         MenuContainer,
         NewSectionDialog,
         Content,
-        UploadImage
+        UploadImage,
+        Notifications
     },
 
     data() {
         return {
             menuList: [],
-
             showDialog: false,
-
             handleId: 0,
-
-            params: []
+            activityId : common.activityId,
         }
-    },
-
-    computed: {
-        menuList () {
-            let menuList = []
-            this.params.forEach(function(t, i) {
-                switch (t.type) {
-                    case 'imagetab':
-                        menuList.push({
-                            name: 'imagetab',
-                            component: 'ImageTab',
-                            data: t.items,
-                            type: 'imagetab'
-                        })
-                        break;
-                    case 'navigation':
-                        menuList.push({
-                            name: 'navigation',
-                            component: 'GoodsList',
-                            data: t.items,
-                            type: 'navigation'
-                        })
-                        break;
-                    case 'banner':
-                        menuList.push({
-                            name: 'banner',
-                            component: 'Banner',
-                            data: t.items,
-                            type: 'banner'
-                        })
-                        break;
-                    case 'goods_one':
-                        menuList.push({
-                            name: 'goods_one',
-                            component: 'GoodsList',
-                            data: t.items,
-                            type: 'goods_one'
-                        })
-                        break;
-                    // case 'picturenative':
-                    //     menuList.push({
-                    //         name: 'picturenative',
-                    //         component: 'PictureNative',
-                    //         data: t.items,
-                    //         type: 'picturenative'
-                    //     })
-                    //     break;
-                }
-            })
-
-            // console.log(menuList)
-            return menuList
-        }
-
     },
 
     created() {
-        this.$http.get('activity/crossBorder/447?token=01vyORT9mrGXDWxpd1im')
-        .then((response) => {
-            console.log(response)
-            let res = response.json()
-            if( res.ret === 0 ) {
-                let t = res.data;
-                this.$set('params', t.params)
+        this.reqShowData()
+    },
+
+    events : {
+        onUploadShow(broadcastMsg) {
+            this.$broadcast('onUploadShow', broadcastMsg)
+        }
+    },
+
+    ready () {
+        var startTime = new Date().getTime(); 
+        var interval = setInterval(() => { 
+            if( new Date().getTime() - startTime > 60*60*1000){ 
+                clearInterval(interval); 
+                alert('超时处理，请刷新页面')
+                return; 
             } else {
-                console.error("xiaolian＝＝》TOKEN IS FAILED")
+                this.$broadcast('saveComponent')
             }
-        }, (response) => {
-            console.log(response)
-        })
+        }, 10*60*1000)
     },
 
     methods: {
+        reqShowData () {
+            var self = this
+            api.getAction('activity_all_params/'+ self.activityId, {}, (response)=> {
+                console.log(response)
+                let res = response.json()
+                if(res.code !== 0 ) return
+                self.composeList(res.data)
+            })
+        },
+
+        composeList (params) {
+            let self = this
+            params.forEach(function(t, i) {
+                switch (t.compName) {
+                    case 'imagetab':
+                        t.name = "横铺图片"
+                        t.component = 'ImageTab'
+                        break;
+                    case 'banner':
+                        t.name = '图片轮播';
+                        t.component = 'Banner';
+                        break;
+                    case 'goods_one':
+                        t.name = '单列商品';
+                        t.component = 'GoodsList';
+                        break;
+                    case 'goods_tow':
+                        t.name = '双列商品';
+                        t.component = 'GoodsList';
+                        break;
+                    case 'navigation':
+                        t.name = 'navigation';
+                        t.component = 'Test';
+                        break;
+                    case 'goods_one_power':
+                        t.name = '加强单列';
+                        t.component = 'GoodsPlus';
+                        break;
+                    case 'timer':
+                        t.name = '定时器';
+                        t.component = 'Timer';
+                        break;
+                    case 'Anchor':
+                        t.name = '锚点导航';
+                        t.component = 'Anchor';
+                        break;
+                    case 'texttab':
+                        t.name = '文字合集';
+                        t.component = 'TextTab';
+                        break;
+                    case 'picturenative':
+                        t.name = '图片导航';
+                        t.component = 'PictureNative';
+                        break;
+                    case 'flashPrice':
+                        t.name = '限时特价';
+                        t.component = 'FlashPrice';
+                        break;
+                    case 'classify':
+                        t.name = 'classify';
+                        t.component = 'Test';
+                        break;
+                }
+            })
+
+            this.$set('menuList', params)
+        },
+
         toggleDialog () {
             this.showDialog = !this.showDialog;
         },
 
         insertSection (name, comp) {
-            var part = this.menuList.splice(this.handleId, this.menuList.length)
-            this.menuList.push({
-                name: name,
-                component: comp
-            })
-            this.menuList = this.menuList.concat(part)
+            let fromIndex = this.handleId+1
+            let endIndex = this.menuList.length
+
+            if( fromIndex === endIndex ) {
+                this.menuList.push({
+                    name: name,
+                    component: comp
+                })
+            } else {
+                let part = this.menuList.splice(fromIndex, endIndex)
+                this.menuList.push({
+                    name: name,
+                    component: comp
+                })
+                this.menuList = this.menuList.concat(part)
+            }
+
+            this.handleId += 1
         },
-
     },
-
-    // router: {
-    //     data(transition) {
-    //         window.setTimeout(() => {
-    //             transient.next()
-    //         }, 3000)
-    //     }
-    // }
 }
 
 </script>

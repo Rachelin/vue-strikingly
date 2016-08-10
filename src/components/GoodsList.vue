@@ -1,12 +1,12 @@
 <!--
- @theme : 商品展示－单列商品
+ @theme : 商品展示
  @author: wuxiaolian
  @date  : 20160705
 -->
 <template>
     <ul class="clearfix" v-bind:class="listClass">
         <goods
-            v-dragable-for="item in goodsList"
+            v-dragable-for="item in items"
             :index="$index"
             :item="item"
             :column="column"
@@ -15,49 +15,95 @@
         </goods>
     </ul>
 
-    <div class="s-repeatable-add-button-wrapper" @click="addGoods">
-        <div class="s-repeateable-add-button">
-            添加项目
+    <div class="s-repeatable-add-button-wrapper">
+        <div class="s-repeateable-add-button" @click="isModalVisible = true">
+            添加商品
         </div>
+
+        <div v-if="type == 2 || type == 4" class="s-repeateable-add-button" @click="changeUI()">
+            改变布局
+        </div>
+
+        <slot name="otherBtn"></slot>
     </div>
+
+<modal :is-visible.sync="isModalVisible" modal-class="time-modal">
+    <span>添加您需商品ID（ex: id1,id2,id3）</span><br>
+    <input type="text" v-model="newGoodsId | numberStr"></input>
+    <span>输入的结果是：{{newGoodsId}}</span>
+    <br/>
+    <a v-if="editIndex > -1" class="s-btn" v-on:click="add">保存</a>
+    <a v-else class="s-btn" v-on:click="add">添加</a>
+</modal>
 </template>
 
 <script>
-import Goods from './Goods.vue'
+import Goods                from './Goods.vue'
+import Modal                from './Modal.vue'
+
+import {common}             from '../store/Common.js'
+import {api}                from '../store/Api.js'
+import notificationStore    from '../NotificationStore.js';
 
 export default {
     name: 'GoodsList',
 
     components: {
-        Goods
+        Goods,
+        Modal
+    },
+
+    data () {
+        return {
+            isModalVisible: false,
+            newGoodsId: '',
+            editIndex: -1,
+        }
     },
 
     props: {
-        goodsList: Array,
-        type: String
+        items: {
+            type: Array,
+            require: true,
+            twoWay: true,
+            default: function () {
+                return []
+            }
+        },
+        type: {
+            type: Number,
+            default: 2 // 默认单列列表
+        },
+        id: {
+            type: String,
+            default: null
+        },
+        visible: {
+            type: String,
+            default: 1
+        },
+        isChild: {
+            type: Boolean,
+            default: false
+        }
     },
 
     computed : {
         listClass () {
-            if( this.column < 2 ) {
-                return 'list-product-one'
-            } else {
-                return 'list-product-two'
-            }
+            return ( this.column < 2 ) ? 'list-product-one' : 'list-product-two'
         },
 
         column () {
-            if(this.type === 'goods_one') {
+            if (this.type == 2) {
                 return 1
-            } else if (this.type === 'goods_tow') {
+            } else if(this.type == 4) {
                 return 2
-            } else if (this.type === 'navigation') {
+            } else {
                 return 2
             }
         },
 
         options() {
-            let that = this
             return {
                 group: 'goods',
                 animation: 200,
@@ -66,35 +112,144 @@ export default {
         }
     },
 
+    events: {
+        delGoods (index) {
+            console.log("index = ", index)
+            this.items.$remove(this.items[index])
+        },
+
+        editGoods (index) {
+            this.newGoodsId = this.items[index].id
+            this.editIndex = index
+            this.popupDialog(true)
+        },
+
+        saveComponent () {
+            if(this.isChild) return
+            this.putAction()
+            console.log('==>[GoodsList] doing saving')
+        },
+
+        deleteComponent () {
+            console.log('Here is GoodsList')
+        },
+
+        // addGoods (goodsIds) {
+        //     console.log('addGoods => ', goodsIds)
+        //     if(!goodsIds) return
+        //     let goodsAry = goodsIds.split(',')
+        //     this.getGoods(goodsAry)
+        // }
+    },
+
     methods: {
 
-        addGoods () {
-            var defaultGoods = {
-                "id":8312,
-                "site_id":10666,
-                "price":"268.00",
-                "market_price":"351.00",
-                "rebate":"0.2000",
-                "rebate1":"0.5000",
-                "image":162262,
-                "name":"祛斑美肌蜂胶颗粒延缓衰老抑菌调节内分泌",
-                "fencheng":"26.80",
-                "img":"http://image.121dian.com/site/10666/ce30c145438ca781fc34fdb4f0d58db3.jpg",
-                "goods_url":"http://m.121dian.net/goods/8312/h_5534mm?trace_data=%7B%22activity_id%22%3A%22345%22%7D",
-                "is_jd":0,
-                "trace":{
-                    "data_str":"{activity_id:345}"
+        add () {
+            // 允许 [数组，空格，中文逗号，英文逗号]
+            if(this.newGoodsId.length > 0) {
+                let goodsAry = this.newGoodsId.split(',')
+                if( this.editIndex > -1) {
+                    // 修改
+                    let temp = [] 
+                    temp[0] = goodsAry[0]
+                    this.getGoods(temp)
+                } else {
+                    this.getGoods(goodsAry)
                 }
+            } else {
+                this.showNotification('请输入商品ID')
+            }
+        },
+
+        getGoods (goodsAry) {
+            let params = {
+                goodsids : goodsAry,
+                type: this.type
+            }
+            api.getAction('activity_goods/', params, (response) => {
+                let res = response.json()
+                if(res.code === 0 && res.data.length) {
+                    if(this.editIndex < 0) {
+                        res.data.forEach((t, i)=>{
+                            this.items.push(t)
+                        })
+                    } else {
+                        this.items.$set(this.editIndex, res.data[0])
+                    }
+                } else if(res.data.length < 1) {
+                    this.showNotification('没有数据')
+                } else {
+                    console.log("[message]:", res)
+                }
+                this.editIndex = -1
+                this.popupDialog(false)
+            })
+        },
+
+        getParams () {
+            var params = ""
+            this.items.forEach(function(t, i) {
+                params += t.id + ','
+            })
+            return params.substring(0, params.length-1)
+        },
+
+        putAction () {
+            var params = {
+                id:             this.id,
+                activity_id:    common.activityId,
+                type:           this.type,
+                listorder:      255,
+                is_visible:     this.visible,
+                params:         this.getParams()
+            }
+            api.saveActivityParams(params, 'GoodsList')
+            // api.putAction('activity_params', params, (response) => {
+            //     let res = response.json()
+            //     if(res.code === 0) {
+            //         this.showNotification(res.msg)
+            //     } else {
+            //         console.log("[message]:", res)
+            //     }
+            // })
+        },
+
+        // 弹窗
+        popupDialog (flag) {
+            this.goodId = null
+            this.isModalVisible = flag
+        },
+
+        updateValue (value) {
+            this.value = value
+            if(this.editId > -1) {
+                this.editItem()
+            } else {
+                this.addItem()
             }
 
-            this.goodsList.push(defaultGoods)
+            this.isModalVisible = false
+        },
+
+        changeUI () {
+            if(this.type == 2) {
+                this.$set('type', 4)
+            } else {
+                this.$set('type', 2)
+            }
+        },
+
+        showNotification (msg) {
+            msg = msg ? msg : 'null'
+            notificationStore.add({
+                title: msg
+            });
         }
     }
 }
 </script>
 
 <style lang="less">
-@import '../less/_common.less';
 @import '../less/_variable.less';
 @import '../less/_mixin.less';
 

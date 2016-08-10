@@ -1,16 +1,16 @@
 <template>
     <div id="x-menu-container" class="x-menu-container open transition">
-        <div class="gray minimize-icon">
+        <!-- <div class="gray minimize-icon">
             <a id="x-minimize-button" rel="tooltip-right" title data-original-title="隐藏编辑面板">
                 <span class="entypo entypo-left-open-big"></span>
             </a>
-        </div>
+        </div> -->
         <div class="menu">
             <div class="logo"></div>
             <div class="main-menu">
                 <div class="top-menu" id="x-top-menu">
-                    <button>预览</button>
-                    <button>发布</button>
+                    <button class="s-side-menu-btn" @click="onPreview">保存</button>
+                    <button class="s-side-menu-btn" @click="onPublish">发布</button>
                 </div>
                 <div class="middle-menu">
                     <div class="section-and-links">
@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import {api}            from '../store/Api.js'
+import notificationStore    from '../NotificationStore.js';
 export default {
     name: 'MenuContainer',
 
@@ -66,37 +68,132 @@ export default {
 
     computed: {
         options() {
-            let that = this
+            var self = this
             return {
                 group: 'menu',
                 animation: 200,
                 handle: '.move',
                 onEnd : function (evt) {
-                    //evt.oldIndex;  // element's old index within parent
-                    //evt.newIndex;  // element's new index within parent
-                    that.handleId = evt.newIndex;
+                    // console.log("evt.newIndex", evt.newIndex)
+                    // console.log("evt.oldIndex", evt.oldIndex)
+                    self.selectIt(evt.newIndex)
                 },
             }
         }
     },
 
+    // events: {
+    //     saveComponent () {
+    //     }
+    // },
+
     methods: {
+        setListOrder () {
+            let temp = this.menuList[this.handle]
+            let params = {
+                id: '',
+                listorder: this.handle,
+                act:'order'
+            }
+
+            if(typeof temp.id !== 'undefined') {
+                params.id = temp.id
+                api.setActivityListOrder(params, temp.component)
+            } else {
+                temp.items.forEach((t, i) => {
+                    if(typeof t.id !== 'undefined') {
+                        params.id = t.id
+                        api.setActivityListOrder(params, temp.component)
+                    } else {
+                        console.error('[setListOrder] => message: 没id号哦')
+                    }
+                })
+            }
+        },
+
+        setVisible () {
+            let temp = this.menuList[this.handle]
+            let params = {
+                id: '',
+                is_visible: 0,
+                act:'show'
+            }
+
+            if(typeof temp.id !== 'undefined') {
+                params.id = temp.id
+                api.setActivityVisible(params, temp.component)
+            } else {
+                temp.items.forEach((t, i) => {
+                    if(typeof t.id !== 'undefined') {
+                        params.id = t.id
+                        api.setActivityVisible(params, temp.component)
+                    } else {
+                        console.error('[setListOrder] => message: 没id号哦')
+                    }
+                })
+            }
+        },
 
         remove () {
             var del = confirm("您确定要删除吗？")
             if(del) {
-                let t = this.menuList.splice(this.handleId, 1)
-                this.handleId = -1
+                let temp = this.menuList[this.handleId]
+
+                if(typeof temp.id !== 'undefined') {
+                    this.deleteComp(temp)
+                } else {
+                    if(temp.items.length > 0) {
+                        this.showNotification('呦吼，要先把控件的每一项都先删除哦')
+                    } else {
+                        this.menuList.splice(this.handleId, 1)
+                        this.handleId = -1
+                    }
+                    
+                }
             }
         },
 
+        deleteComp(item) {
+            api.deleteAction('activity_params', {id:item.id}, (response) => {
+                let res = response.json()
+                if(res.code === 0) {
+                    this.menuList.$remove(item)
+                    this.handleId = -1
+                }
+            })
+
+            console.log('=>Delete id =', item.id)
+        },
+
         selectIt (index) {
+            var self = this
+            console.log("set handleId = ", index)
             this.handleId = index
-            this.$parent.$broadcast('scroll-to', index)
+            setTimeout(function(){
+                self.setListOrder()
+                self.$parent.$broadcast('scroll-to', index)
+            }, 1000)
         },
 
         toggleNewSection () {
             this.$dispatch('toggle-section-dialog')
+        },
+
+        onPreview () {
+            console.log("will be preview")
+            this.$broadcast('onUploadShow', broadcastMsg)
+        },
+
+        onPublish () {
+            console.log("will be publish")
+            alert('功能还在开发')
+        },
+
+        showNotification (msg) {
+            msg = msg ? msg : 'null'
+            notificationStore.add({
+                title: msg
+            });
         }
     },
 
@@ -150,13 +247,18 @@ export default {
             zoom: 1;
         }
 
+        .top-menu {
+            margin: 0 5px 4px 5px;
+            height: 50px;
+        }
+
         width: 220px;
         height: 100%;
     
         .main-menu {
             position: relative;
             width: 220px;
-            height: calc(100% - 35px);
+            height: calc(~"100% - 35px");
         }
 
         .middle-menu {
@@ -307,5 +409,37 @@ export default {
         .shadow-text;
     }
 
+}
+
+.s-side-menu-btn {
+    float: left;
+    margin: 4px 5px;
+    padding: 0;
+    width: 95px;
+    height: 44px;
+    background: #555; 
+    background: rgba(0,0,0,0.3);
+    color: #fff;
+    text-shadow: none;
+    cursor: pointer;
+    box-shadow: none;
+    text-decoration: none;
+    border-radius: 3px;
+
+    background: #555;
+    box-shadow: inset 0 1px rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.2);
+}
+
+.s-side-menu-btn.selected,.s-side-menu-btn:hover,.s-side-menu-btn:active {
+    background-color: #fb2;
+    background-repeat: repeat-x;
+    background-image: -webkit-linear-gradient(top,#fe1,#fb2);
+    background-image: linear-gradient(to bottom,#fe1,#fb2);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee11',endColorstr='#ffbb22',GradientType=0);
+    color: black;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    border-radius: 3px;
+    box-shadow: inset 0 1px rgba(255,255,255,0.4),0 1px 2px rgba(0,0,0,0.4);
+    text-decoration: none
 }
 </style>
