@@ -34,8 +34,8 @@
 <modal :is-visible.sync="isModalVisible" modal-class="time-modal">
     <p>添加素材：</p>
     <div>
-        <a class="s-btn" @click="showUploader">上传图片</a>
-        <img :src="tempData.image">
+        <a class="s-btn" @click="showUploader">上传图片</a><br>
+        <img :src="tempData.image" class="img-place">
     </div>
     <span>图片标题：</span> <input type="text" v-model="tempData.title"></input>
     <span>连接地址：</span> <input type="text" v-model="tempData.url"></input>
@@ -88,7 +88,7 @@ export default {
         },
         visible: {
             type: String,
-            default: 1
+            default: "1"
         }
     },
 

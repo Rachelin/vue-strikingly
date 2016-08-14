@@ -9,7 +9,7 @@
             <div class="logo"></div>
             <div class="main-menu">
                 <div class="top-menu" id="x-top-menu">
-                    <button class="s-side-menu-btn" @click="onPreview">保存</button>
+                    <button class="s-side-menu-btn" @click="onSave">保存</button>
                     <button class="s-side-menu-btn" @click="onPublish">发布</button>
                 </div>
                 <div class="middle-menu">
@@ -179,9 +179,9 @@ export default {
             this.$dispatch('toggle-section-dialog')
         },
 
-        onPreview () {
+        onSave () {
             console.log("will be preview")
-            this.$broadcast('onUploadShow', broadcastMsg)
+            this.$broadcast('saveComponent')
         },
 
         onPublish () {

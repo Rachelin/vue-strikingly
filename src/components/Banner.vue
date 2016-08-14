@@ -40,7 +40,6 @@
 import ComponentEditor  from './ComponentEditor.vue'
 import Carousel         from './Carousel.vue'
 import CarouselItem     from './CarouselItem.vue'
-import popupDialog      from './popupDialog.vue'
 import Modal            from './Modal.vue'
 import UploadImage      from './UploadImage.vue'
 

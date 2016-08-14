@@ -3,9 +3,9 @@ import Vue from 'vue'
 import Resource from 'vue-resource'
 Vue.use(Resource)
 
-Vue.http.options.root = 'xxx'
+Vue.http.options.root = 'http://admin.121dian.net/api'
 Vue.http.headers.common["Content-Type"] = 'application/x-www-form-urlencoded; charset=UTF-8'
-Vue.http.headers.common["Access-Token"] = 'xxx'
+Vue.http.headers.common["Access-Token"] = 'zoeO5HDMpNWxzPH029BPdLVyu73He1dv'
 // Vue.http.headers.common["Access-Control-Request-Headers"] = 'access-token'
 Vue.http.options.emulateJSON = true;
 

@@ -2,7 +2,7 @@
   <div class="underlay" v-if="isVisible" transition="modal" @click="onUnderlayClick">
     <div class="modal {{ modalClass }}">
       <a @click="isVisible = false" class="modal__close-btn">
-        <i class="fa fa-times" aria-hidden="true"></i>
+        <i class="fa fa-times" aria-hidden="true">X</i>
       </a>
 
       <slot></slot>
